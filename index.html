@@ -14,7 +14,51 @@
             min-height: 100vh;
         }
 
-        /* تأثير تغيير لون الاسم تدريجياً وبشكل مستمر */
+        /* شاشة الترحيب الكبرى التي تملأ الشاشة بالكامل أول ما يفتح الموقع */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 15, 30, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        #welcome-overlay img {
+            max-width: 85vw;
+            max-height: 65vh;
+            object-fit: contain;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+            margin-bottom: 20px;
+            border: 3px solid #00e5ff;
+        }
+
+        .enter-btn {
+            background: linear-gradient(45deg, #ff4081, #ff9800);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 64, 129, 0.6);
+        }
+
+        /* تأثير تغيير لون الاسم تدريجياً وبشكل مستمر مع تأثير الكتابة */
         @keyframes colorChange {
             0% { color: #ffeb3b; text-shadow: 0 0 10px #ff9800; }
             33% { color: #00e5ff; text-shadow: 0 0 10px #00bcd4; }
@@ -28,7 +72,11 @@
             margin-top: 15px;
             margin-bottom: 30px;
             letter-spacing: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
             animation: colorChange 6s infinite;
+            border-left: 4px solid #fff;
         }
 
         .games-container {
@@ -55,10 +103,10 @@
         }
         
         /* ألوان مميزة للصناديق */
-        .box-1 { background-color: #e3f2fd; } 
         .box-2 { background-color: #e8f5e9; } 
-        .box-3 { background-color: #fff3e0; } 
         .box-4 { background-color: #f3e5f5; } 
+        .box-1 { background-color: #e3f2fd; } 
+        .box-3 { background-color: #fff3e0; } 
         .box-5 { background-color: #ffebee; } 
         .box-6 { background-color: #e0f7fa; } 
         .box-7 { background-color: #fffde7; } 
@@ -102,11 +150,38 @@
 </head>
 <body>
 
-    <div class="site-title">MAZEN MOHAMED</div>
+    <!-- 1. شاشة الترحيب الكبرى (صورتك بملء الشاشة أولاً) -->
+    <div id="welcome-overlay">
+        <img src="data:image/png;base64,..." alt="واجهة ترحيبية">
+        <br>
+        <button class="enter-btn" onclick="enterSite()">دخول إلى المنصة 🚀</button>
+    </div>
+
+    <!-- 2. اسمك الذي يظهر سينمائياً حرف بحرف بعد الدخول -->
+    <div>
+        <h1 class="site-title" id="typedName"></h1>
+    </div>
 
     <div class="games-container">
 
-        <!-- 1. تخمين الرقم (1-100) -->
+        <!-- 1. لعبة النقرات السريعة (طلبتها تكون من البداية) -->
+        <div class="game-box box-2">
+            <h2>لعبة النقرات السريعة</h2>
+            <p>النقرات: <span id="clickCount" style="font-weight: bold; font-size: 18px;">0</span></p>
+            <button onclick="incrementClick()">اضغط هنا بسرعة!</button>
+        </div>
+
+        <!-- 2. صيد الأرقام السريعة (طلبتها تكون من البداية) -->
+        <div class="game-box box-4">
+            <h2>🎯 صيد الأرقام</h2>
+            <p>النقاط: <span id="scoreNum" style="font-weight: bold;">0</span> | الوقت: <span id="timeLeft" style="font-weight: bold;">10</span>ث</p>
+            <button class="catch-btn" id="targetBtn" onclick="hitTarget()" style="display:none;">اضغط هنا!</button>
+            <br>
+            <button onclick="startCatchGame()" id="startCatchBtn">ابدأ اللعبة</button>
+            <p id="catchResult" style="font-weight: bold;"></p>
+        </div>
+
+        <!-- 3. تخمين الرقم (1-100) -->
         <div class="game-box box-1">
             <h2>تخمين الرقم (1-100)</h2>
             <p>اختر رقماً بين 1 و 100:</p>
@@ -116,30 +191,13 @@
             <p id="guessResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 2. لعبة النقرات السريعة -->
-        <div class="game-box box-2">
-            <h2>لعبة النقرات السريعة</h2>
-            <p>النقرات: <span id="clickCount" style="font-weight: bold; font-size: 18px;">0</span></p>
-            <button onclick="incrementClick()">اضغط هنا بسرعة!</button>
-        </div>
-
-        <!-- 3. تحدي الأعصاب (التوقيت) -->
+        <!-- 4. تحدي الأعصاب (التوقيت) -->
         <div class="game-box box-3">
             <h2>⏱️ تحدي الأعصاب</h2>
             <p>أوقف العداد عند 5.0 ثانية بالضبط!</p>
             <p id="timerDisplay" style="font-size: 24px; font-weight: bold; color: #d32f2f;">0.0 ثانية</p>
             <button onclick="startStopTimer()" id="timerBtn">ابدأ التحدي</button>
             <p id="timerResult" style="font-weight: bold;"></p>
-        </div>
-
-        <!-- 4. صيد الأرقام السريعة -->
-        <div class="game-box box-4">
-            <h2>🎯 صيد الأرقام</h2>
-            <p>النقاط: <span id="scoreNum" style="font-weight: bold;">0</span> | الوقت: <span id="timeLeft" style="font-weight: bold;">10</span>ث</p>
-            <button class="catch-btn" id="targetBtn" onclick="hitTarget()" style="display:none;">اضغط هنا!</button>
-            <br>
-            <button onclick="startCatchGame()" id="startCatchBtn">ابدأ اللعبة</button>
-            <p id="catchResult" style="font-weight: bold;"></p>
         </div>
 
         <!-- 5. سرعة رد الفعل -->
@@ -150,7 +208,7 @@
             <button onclick="startReactionGame()">إعادة البداية</button>
         </div>
 
-        <!-- 🧠 6. الذاكرة الرقمية -->
+        <!-- 6. الذاكرة الرقمية -->
         <div class="game-box box-6">
             <h2>🧠 الذاكرة الرقمية</h2>
             <p id="memorySeqText" style="font-size: 20px; font-weight: bold; color: #00796b;">اضغط ابدأ واحفظ الأرقام</p>
@@ -160,7 +218,7 @@
             <p id="memoryResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- ➕ 7. الحساب السريع -->
+        <!-- 7. الحساب السريع -->
         <div class="game-box box-7">
             <h2>➕ الحساب السريع</h2>
             <p id="mathQuestion" style="font-size: 20px; font-weight: bold; color: #5d4037;">اضغط ابدأ السؤال</p>
@@ -170,7 +228,7 @@
             <p id="mathResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 🔍 8. تتبع الصندوق (البصري) -->
+        <!-- 8. تتبع الصندوق (البصري) -->
         <div class="game-box box-8">
             <h2>🔍 تتبع الصندوق</h2>
             <p>أين توجد الجائزة؟ (اختر صندوقاً)</p>
@@ -183,7 +241,7 @@
             <p id="cupResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 🔤 9. الكلمات المبعثرة -->
+        <!-- 9. الكلمات المبعثرة -->
         <div class="game-box box-9">
             <h2>🔤 ترتيب الكلمات</h2>
             <p>رتب الحروف لتكون كلمة صحيحة:</p>
@@ -195,20 +253,14 @@
             <p id="scrambleResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 👁️ 10. العنصر المختلف (مع صورتك المميزة) -->
+        <!-- 10. العنصر المختلف -->
         <div class="game-box box-10">
             <h2>👁️ قوة الملاحظة</h2>
             <p>اختر العنصر المختلف:</p>
-            
-            <!-- عرض صورتك التي أرفقتها بدون كلام -->
-            <div style="margin-bottom: 15px;">
-                <img src="data:image/png;base64,..." alt="صورة الهدية" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            </div>
-
-            <div style="display: flex; justify-content: center; gap: 10px; margin: 10px;" id="oddContainer">
-                <button onclick="checkOdd(0)">🍎</button>
-                <button onclick="checkOdd(1)">🍎</button>
-                <button onclick="checkOdd(2)">🍌</button>
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 15px;" id="oddContainer">
+                <button onclick="checkOdd(0)" style="font-size: 24px;">🍎</button>
+                <button onclick="checkOdd(1)" style="font-size: 24px;">🍎</button>
+                <button onclick="checkOdd(2)" style="font-size: 24px;">🍌</button>
             </div>
             <p id="oddResult" style="font-weight: bold;"></p>
         </div>
@@ -216,7 +268,7 @@
     </div>
 
     <script>
-        // نظام المؤثرات الصوتية (Web Audio API - بدون ملفات خارجية)
+        // نظام المؤثرات الصوتية (Web Audio API)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound(type) {
@@ -232,7 +284,6 @@
             let now = audioCtx.currentTime;
 
             if (type === 'click') {
-                // صوت تكة خفيفة للأزرار
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(400, now);
                 gainNode.gain.setValueAtTime(0.1, now);
@@ -240,16 +291,14 @@
                 osc.start(now);
                 osc.stop(now + 0.08);
             } else if (type === 'win') {
-                // صوت فوز أو نجاح مبهج
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(587.33, now); // D5
-                osc.frequency.setValueAtTime(880, now + 0.1); // A5
+                osc.frequency.setValueAtTime(587.33, now);
+                osc.frequency.setValueAtTime(880, now + 0.1);
                 gainNode.gain.setValueAtTime(0.15, now);
                 gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
                 osc.start(now);
                 osc.stop(now + 0.3);
             } else if (type === 'lose') {
-                // صوت خطأ خفيف
                 osc.type = 'sawtooth';
                 osc.frequency.setValueAtTime(150, now);
                 osc.frequency.setValueAtTime(100, now + 0.1);
@@ -260,82 +309,50 @@
             }
         }
 
-        // تشغيل صوت النقر تلقائياً على كل الأزرار
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => playSound('click'));
-        });
-
-
-        // 1. تخمين الرقم (1-100)
-        const targetNumber100 = Math.floor(Math.random() * 100) + 1;
-        function checkGuess100() {
-            const userGuess = Number(document.getElementById('guessInput').value);
-            const resultElement = document.getElementById('guessResult');
-            if (userGuess === targetNumber100) {
-                resultElement.textContent = "🎉 مبروك! الرقم صحيح تماماً.";
-                resultElement.style.color = "green";
-                playSound('win');
-            } else {
-                playSound('lose');
-                if (userGuess > targetNumber100) {
-                    resultElement.textContent = "📉 الرقم الأصلي أقل من كده (انزل تحت).";
-                    resultElement.style.color = "#d32f2f";
-                } else {
-                    resultElement.textContent = "📈 الرقم الأصلي أكبر من كده (اططلع فوق).";
-                    resultElement.style.color = "#d32f2f";
+        // دالة كتابة الاسم سينمائياً حرف بحرف
+        function typeWriterEffect() {
+            const text = "MAZEN MOHAMED";
+            let i = 0;
+            const speed = 120;
+            document.getElementById("typedName").textContent = "";
+            function type() {
+                if (i < text.length) {
+                    document.getElementById("typedName").textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
                 }
             }
+            type();
         }
 
-        // 2. النقرات السريعة
+        // دالة الدخول للموقع وإخفاء شاشة الترحيب وتشغيل الصوت وبدء ظهور الاسم
+        function enterSite() {
+            playSound('win');
+            const overlay = document.getElementById('welcome-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                typeWriterEffect(); 
+            }, 500);
+        }
+
+        // تشغيل صوت النقر للأزرار
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(!btn.classList.contains('enter-btn')) {
+                    playSound('click');
+                }
+            });
+        });
+
+        // 1. النقرات السريعة
         let count = 0;
         function incrementClick() {
             count++;
             document.getElementById('clickCount').textContent = count;
         }
 
-        // 3. تحدي الأعصاب
-        let timerInterval, startTime, isRunning = false;
-        function startStopTimer() {
-            const btn = document.getElementById('timerBtn');
-            const display = document.getElementById('timerDisplay');
-            const result = document.getElementById('timerResult');
-
-            if (!isRunning) {
-                startTime = Date.now();
-                btn.textContent = "وقف! 🛑";
-                btn.style.backgroundColor = "#d32f2f";
-                result.textContent = "";
-                
-                timerInterval = setInterval(() => {
-                    let elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-                    display.textContent = elapsed + " ثانية";
-                }, 100);
-                isRunning = true;
-            } else {
-                clearInterval(timerInterval);
-                btn.textContent = "ابدأ التحدي";
-                btn.style.backgroundColor = "#ff5722";
-                isRunning = false;
-
-                let finalTime = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
-                if (finalTime === 5.0) {
-                    result.textContent = "🏆 أسطورة! جبتها 5 ثوانٍ بالضبط!";
-                    result.style.color = "#2e7d32";
-                    playSound('win');
-                } else if (finalTime >= 4.8 && finalTime <= 5.2) {
-                    result.textContent = "🔥 ممتاز جداً! (" + finalTime + " ث)";
-                    result.style.color = "#f57c00";
-                    playSound('win');
-                } else {
-                    result.textContent = "😅 جبت " + finalTime + " ثانية، حاول تاني!";
-                    result.style.color = "#c62828";
-                    playSound('lose');
-                }
-            }
-        }
-
-        // 4. صيد الأرقام
+        // 2. صيد الأرقام
         let catchScore = 0, timeLeft = 10, gameTimer;
         function startCatchGame() {
             catchScore = 0;
@@ -369,6 +386,64 @@
         function moveTargetRandomly() {
             const btn = document.getElementById('targetBtn');
             btn.style.margin = (Math.floor(Math.random() * 40) - 20) + "px";
+        }
+
+        // 3. تخمين الرقم (1-100)
+        const targetNumber100 = Math.floor(Math.random() * 100) + 1;
+        function checkGuess100() {
+            const userGuess = Number(document.getElementById('guessInput').value);
+            const resultElement = document.getElementById('guessResult');
+            if (userGuess === targetNumber100) {
+                resultElement.textContent = "🎉 مبروك! الرقم صحيح تماماً.";
+                resultElement.style.color = "green";
+                playSound('win');
+            } else {
+                playSound('lose');
+                if (userGuess > targetNumber100) {
+                    resultElement.textContent = "📉 الرقم الأصلي أقل من كده.";
+                    resultElement.style.color = "#d32f2f";
+                } else {
+                    resultElement.textContent = "📈 الرقم الأصلي أكبر من كده.";
+                    resultElement.style.color = "#d32f2f";
+                }
+            }
+        }
+
+        // 4. تحدي الأعصاب
+        let timerInterval, startTime, isRunning = false;
+        function startStopTimer() {
+            const btn = document.getElementById('timerBtn');
+            const display = document.getElementById('timerDisplay');
+            const result = document.getElementById('timerResult');
+
+            if (!isRunning) {
+                startTime = Date.now();
+                btn.textContent = "وقف! 🛑";
+                btn.style.backgroundColor = "#d32f2f";
+                result.textContent = "";
+                
+                timerInterval = setInterval(() => {
+                    let elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                    display.textContent = elapsed + " ثانية";
+                }, 100);
+                isRunning = true;
+            } else {
+                clearInterval(timerInterval);
+                btn.textContent = "ابدأ التحدي";
+                btn.style.backgroundColor = "#ff5722";
+                isRunning = false;
+
+                let finalTime = parseFloat(((Date.now() - startTime) / 1000).toFixed(1));
+                if (finalTime === 5.0) {
+                    result.textContent = "🏆 أسطورة! 5 ثوانٍ بالضبط!";
+                    result.style.color = "#2e7d32";
+                    playSound('win');
+                } else {
+                    result.textContent = "😅 جبت " + finalTime + " ثانية، حاول تاني!";
+                    result.style.color = "#c62828";
+                    playSound('lose');
+                }
+            }
         }
 
         // 5. سرعة رد الفعل
@@ -413,7 +488,7 @@
         // 6. الذاكرة الرقمية
         let currentMemorySeq = "";
         function startMemoryGame() {
-            currentMemorySeq = Math.floor(100 + Math.random() * 900).toString(); // 3 أرقام
+            currentMemorySeq = Math.floor(100 + Math.random() * 900).toString();
             const seqText = document.getElementById('memorySeqText');
             const inputField = document.getElementById('memoryInput');
             const btn = document.getElementById('memoryBtn');
@@ -547,4 +622,4 @@
         }
     </script>
 </body>
-                                               </html>
+                                                                                                                 </html>
