@@ -2,61 +2,101 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع الألعاب</title>
-
+    <title>موقع الألعاب البسيط الخاص بي</title>
     <style>
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            font-family: Tahoma, sans-serif;
             text-align: center;
+            background-color: #f0f2f5;
+            margin-top: 30px;
         }
-
-        header {
-            background: #111;
-            color: white;
-            padding: 30px;
-        }
-
-        .content {
-            padding: 40px 20px;
-        }
-
-        .game {
+        .game-box {
             background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            width: 80%;
             max-width: 400px;
-            margin: auto;
-            padding: 25px;
-            border-radius: 15px;
         }
-
-        button {
-            background: #111;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
+        input, button {
+            padding: 10px;
             font-size: 16px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
             cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
-
 <body>
 
-    <header>
-        <h1>أهلاً وسهلاً 🎮</h1>
-    </header>
-
-    <div class="content">
-        <div class="game">
-            <h2>الألعاب</h2>
-            <p>اختار اللعبة اللي تحب تلعبها</p>
-
-            <button>ابدأ اللعب</button>
-        </div>
+    <!-- اللعبة الأولى: تخمين الرقم -->
+    <div class="game-box">
+        <h2>🎮 لعبة تخمين الرقم</h2>
+        <p>الكمبيوتر اختار رقم من 1 إلى 10، تقدر تخمنه؟</p>
+        
+        <input type="number" id="userGuess" min="1" max="10" placeholder="اكتب رقم هنا">
+        <br>
+        <button onclick="checkGuess()">تحقق من الإجابة</button>
+        
+        <p id="resultMessage" style="font-weight: bold; font-size: 16px;"></p>
     </div>
+
+    <br>
+
+    <!-- اللعبة الثانية: حجر النرد السريع -->
+    <div class="game-box">
+        <h2>🎲 لعبة حجر النرد</h2>
+        <p>اضغط على الزر لتجرب حظك وترمي النرد!</p>
+        
+        <h1 id="diceResult" style="color: #28a745; margin: 10px;">🎲 ?</h1>
+        
+        <button onclick="rollDice()">ارمِ النرد</button>
+        <button onclick="resetDice()" style="background-color: #6c757d;">إعادة ضبط</button>
+    </div>
+
+    <script>
+        // كود اللعبة الأولى
+        let secretNumber = Math.floor(Math.random() * 10) + 1;
+
+        function checkGuess() {
+            let guess = Number(document.getElementById('userGuess').value);
+            let message = document.getElementById('resultMessage');
+
+            if (guess === secretNumber) {
+                message.style.color = "green";
+                message.innerHTML = "🎉 برافو عليك! تخمينك صح 100%!";
+            } else if (guess > secretNumber) {
+                message.style.color = "orange";
+                message.innerHTML = "📈 الرقم كبير جداً، جرب رقم أصغر.";
+            } else if (guess < secretNumber) {
+                message.style.color = "orange";
+                message.innerHTML = "📉 الرقم صغير جداً، جرب رقم أكبر.";
+            } else {
+                message.style.color = "red";
+                message.innerHTML = "❌ من فضلك اكتب رقم صحيح.";
+            }
+        }
+
+        // كود اللعبة الثانية (حجر النرد)
+        function rollDice() {
+            let diceNumber = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('diceResult').innerHTML = "🎲 " + diceNumber;
+        }
+
+        function resetDice() {
+            document.getElementById('diceResult').innerHTML = "🎲 ?";
+        }
+    </script>
 
 </body>
 </html>
