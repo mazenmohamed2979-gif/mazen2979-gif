@@ -14,50 +14,6 @@
             min-height: 100vh;
         }
 
-        /* شاشة الترحيب الكبرى بملء الشاشة */
-        #welcome-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(10, 15, 30, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        #welcome-overlay img {
-            max-width: 85vw;
-            max-height: 65vh;
-            object-fit: contain;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
-            margin-bottom: 20px;
-            border: 3px solid #00e5ff;
-        }
-
-        .enter-btn {
-            background: linear-gradient(45deg, #ff4081, #ff9800);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 22px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 64, 129, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .enter-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 64, 129, 0.6);
-        }
-
         /* تأثير تغيير لون الاسم سينمائياً */
         @keyframes colorChange {
             0% { color: #ffeb3b; text-shadow: 0 0 10px #ff9800; }
@@ -221,14 +177,7 @@
 </head>
 <body>
 
-    <!-- 1. شاشة الترحيب الكبرى -->
-    <div id="welcome-overlay">
-        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f" alt="واجهة ترحيبية ريترو">
-        <br>
-        <button class="enter-btn" onclick="enterSite()">دخول إلى المنصة 🚀</button>
-    </div>
-
-    <!-- 2. اسمك المنور سينمائياً -->
+    <!-- اسمك المنور سينمائياً يظهر فوراً -->
     <div>
         <h1 class="site-title" id="typedName"></h1>
     </div>
@@ -498,21 +447,15 @@
             type();
         }
 
-        // دالة الدخول للموقع وإخفاء شاشة الترحيب
-        function enterSite() {
-            playSound('win');
-            const overlay = document.getElementById('welcome-overlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                typeWriterEffect(); 
-            }, 500);
-        }
+        // تشغيل تأثير الاسم مباشرة عند تحميل الصفحة
+        window.onload = function() {
+            typeWriterEffect();
+        };
 
         // تشغيل صوت النقر للأزرار العامة
         document.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('click', () => {
-                if(!btn.classList.contains('enter-btn') && !btn.classList.contains('open-game-btn') && !btn.classList.contains('close-modal-btn')) {
+                if(!btn.classList.contains('open-game-btn') && !btn.classList.contains('close-modal-btn')) {
                     playSound('click');
                 }
             });
@@ -854,4 +797,4 @@
         nextColorGame();
     </script>
 </body>
-    </html>
+            </html>
