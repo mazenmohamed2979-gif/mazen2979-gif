@@ -2,29 +2,35 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>موقع الألعاب الخاص بـ MAZEN MOHAMED</title>
+    <title>منصة الألعاب الذكية الخاصة بـ MAZEN MOHAMED</title>
     <style>
         body {
             font-family: Tahoma, sans-serif;
             text-align: center;
-            /* خلفية بتدرج لوني عصري ومريح للعين */
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: #fff;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
         }
-        /* تصميم اسمك المميز والعريض في الأعلى */
+
+        /* تأثير تغيير لون الاسم تدريجياً وبشكل مستمر */
+        @keyframes colorChange {
+            0% { color: #ffeb3b; text-shadow: 0 0 10px #ff9800; }
+            33% { color: #00e5ff; text-shadow: 0 0 10px #00bcd4; }
+            66% { color: #ff4081; text-shadow: 0 0 10px #e91e63; }
+            100% { color: #ffeb3b; text-shadow: 0 0 10px #ff9800; }
+        }
+
         .site-title {
-            font-size: 42px;
+            font-size: 44px;
             font-weight: bold;
-            color: #ffffff;
             margin-top: 15px;
             margin-bottom: 30px;
             letter-spacing: 3px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: colorChange 6s infinite;
         }
-        /* حاوية الألعاب عشان تخليهم جنب بعض بالعرض */
+
         .games-container {
             display: flex;
             flex-wrap: wrap;
@@ -33,7 +39,7 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        /* تصميم صندوق اللعبة الواحد بألوان خلفيات مختلفة ومميزة */
+
         .game-box {
             padding: 20px;
             border-radius: 15px;
@@ -48,14 +54,17 @@
             transform: translateY(-5px);
         }
         
-        /* ألوان مميزة لكل صندوق لعبة لكسر الملل */
-        .box-1 { background-color: #e3f2fd; } /* أزرق فاتح */
-        .box-2 { background-color: #e8f5e9; } /* أخضر هادئ */
-        .box-3 { background-color: #fff3e0; } /* برتقالي فاتح */
-        .box-4 { background-color: #f3e5f5; } /* بنفسجي فاتح */
-        .box-5 { background-color: #ffebee; } /* وردي فاتح */
-        .box-6 { background-color: #e0f7fa; } /* سماوي فاتح */
-        .box-7 { background-color: #fffde7; } /* أصفر ليموني فاتح */
+        /* ألوان مميزة للصناديق */
+        .box-1 { background-color: #e3f2fd; } 
+        .box-2 { background-color: #e8f5e9; } 
+        .box-3 { background-color: #fff3e0; } 
+        .box-4 { background-color: #f3e5f5; } 
+        .box-5 { background-color: #ffebee; } 
+        .box-6 { background-color: #e0f7fa; } 
+        .box-7 { background-color: #fffde7; } 
+        .box-8 { background-color: #ede7f6; } 
+        .box-9 { background-color: #e0f2f1; } 
+        .box-10 { background-color: #fce4ec; } 
 
         input {
             padding: 8px;
@@ -64,6 +73,7 @@
             border: 2px solid #ccc;
             border-radius: 5px;
             text-align: center;
+            width: 80%;
         }
         button {
             cursor: pointer;
@@ -75,6 +85,7 @@
             font-size: 16px;
             font-weight: bold;
             transition: background 0.2s;
+            margin: 5px;
         }
         button:hover {
             background-color: #e64a19;
@@ -91,66 +102,38 @@
 </head>
 <body>
 
-    <!-- اسمك العريض والبارز في أول الموقع -->
     <div class="site-title">MAZEN MOHAMED</div>
 
-    <!-- حاوية تجمع كل الألعاب بترتيب العرض -->
     <div class="games-container">
 
-        <!-- 1. لعبة تخمين الرقم -->
+        <!-- 1. تخمين الرقم (1-100) -->
         <div class="game-box box-1">
-            <h2>لعبة تخمين الرقم</h2>
-            <p>اختر رقماً بين 1 و 10:</p>
-            <input type="number" id="guessInput" min="1" max="10">
+            <h2>تخمين الرقم (1-100)</h2>
+            <p>اختر رقماً بين 1 و 100:</p>
+            <input type="number" id="guessInput" min="1" max="100">
             <br>
-            <button onclick="checkGuess()">تحقق</button>
+            <button onclick="checkGuess100()">تحقق</button>
             <p id="guessResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 2. لعبة رمي النرد -->
+        <!-- 2. لعبة النقرات السريعة -->
         <div class="game-box box-2">
-            <h2>لعبة رمي النرد</h2>
-            <p>اختبر حظك مع حجر النرد</p>
-            <button onclick="rollDice()">اضغط لرمي النرد</button>
-            <p id="diceResult" style="font-weight: bold;">النتيجة: -</p>
-        </div>
-
-        <!-- 3. لعبة حجر ورقة مقص -->
-        <div class="game-box box-3">
-            <h2>حجر ورقة مقص</h2>
-            <p>تحدى الكمبيوتر الآن</p>
-            <button onclick="playRps('حجر')">🪨 حجر</button>
-            <button onclick="playRps('ورقة')">📄 ورقة</button>
-            <button onclick="playRps('مقص')">✂️ مقص</button>
-            <p id="rpsResult" style="font-weight: bold; margin-top: 10px;">اختر عنصراً للبدء!</p>
-        </div>
-
-        <!-- 4. لعبة العداد السريع -->
-        <div class="game-box box-4">
             <h2>لعبة النقرات السريعة</h2>
             <p>النقرات: <span id="clickCount" style="font-weight: bold; font-size: 18px;">0</span></p>
             <button onclick="incrementClick()">اضغط هنا بسرعة!</button>
         </div>
 
-        <!-- 5. لعبة حظ اليوم -->
-        <div class="game-box box-5">
-            <h2>لعبة حظ اليوم</h2>
-            <p>ماذا يخبيء لك اليوم؟</p>
-            <button onclick="getLuck()">اختبر حظك اليوم</button>
-            <p id="luckResult" style="font-weight: bold; margin-top: 10px;">-</p>
-        </div>
-
-        <!-- 6. لعبة تحدي التوقيت -->
-        <div class="game-box box-6">
+        <!-- 3. تحدي الأعصاب (التوقيت) -->
+        <div class="game-box box-3">
             <h2>⏱️ تحدي الأعصاب</h2>
-            <p>أوقف العداد عند 5.0 ثانية בדיוק!</p>
+            <p>أوقف العداد عند 5.0 ثانية بالضبط!</p>
             <p id="timerDisplay" style="font-size: 24px; font-weight: bold; color: #d32f2f;">0.0 ثانية</p>
             <button onclick="startStopTimer()" id="timerBtn">ابدأ التحدي</button>
             <p id="timerResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 7. لعبة صيد الأرقام السريعة -->
-        <div class="game-box box-7">
+        <!-- 4. صيد الأرقام السريعة -->
+        <div class="game-box box-4">
             <h2>🎯 صيد الأرقام</h2>
             <p>النقاط: <span id="scoreNum" style="font-weight: bold;">0</span> | الوقت: <span id="timeLeft" style="font-weight: bold;">10</span>ث</p>
             <button class="catch-btn" id="targetBtn" onclick="hitTarget()" style="display:none;">اضغط هنا!</button>
@@ -159,67 +142,160 @@
             <p id="catchResult" style="font-weight: bold;"></p>
         </div>
 
+        <!-- 5. سرعة رد الفعل -->
+        <div class="game-box box-5">
+            <h2>⚡ سرعة رد الفعل</h2>
+            <p id="reactBox" style="background-color: #e57373; color: white; padding: 20px; border-radius: 10px; cursor: pointer; font-weight: bold;" onclick="testReaction()">اضغط هنا عندما يتحول للأخضر!</p>
+            <p id="reactResult" style="font-weight: bold; margin-top: 10px;">اضغط لبدء الاختبار</p>
+            <button onclick="startReactionGame()">إعادة البداية</button>
+        </div>
+
+        <!-- 🧠 6. الذاكرة الرقمية -->
+        <div class="game-box box-6">
+            <h2>🧠 الذاكرة الرقمية</h2>
+            <p id="memorySeqText" style="font-size: 20px; font-weight: bold; color: #00796b;">اضغط ابدأ واحفظ الأرقام</p>
+            <input type="text" id="memoryInput" placeholder="اكتب الأرقام هنا" style="display:none;">
+            <br>
+            <button onclick="startMemoryGame()" id="memoryBtn">ابدأ اللعبة</button>
+            <p id="memoryResult" style="font-weight: bold;"></p>
+        </div>
+
+        <!-- ➕ 7. الحساب السريع -->
+        <div class="game-box box-7">
+            <h2>➕ الحساب السريع</h2>
+            <p id="mathQuestion" style="font-size: 20px; font-weight: bold; color: #5d4037;">اضغط ابدأ السؤال</p>
+            <input type="number" id="mathInput" placeholder="الناتج" style="display:none;">
+            <br>
+            <button onclick="startMathGame()" id="mathBtn">ابدأ التحدي</button>
+            <p id="mathResult" style="font-weight: bold;"></p>
+        </div>
+
+        <!-- 🔍 8. تتبع الصندوق (البصري) -->
+        <div class="game-box box-8">
+            <h2>🔍 تتبع الصندوق</h2>
+            <p>أين توجد الجائزة؟ (اختر صندوقاً)</p>
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 10px;">
+                <button onclick="checkCup(1)">1 📦</button>
+                <button onclick="checkCup(2)">2 📦</button>
+                <button onclick="checkCup(3)">3 📦</button>
+            </div>
+            <button onclick="resetCupGame()">إعادة الخلط</button>
+            <p id="cupResult" style="font-weight: bold;"></p>
+        </div>
+
+        <!-- 🔤 9. الكلمات المبعثرة -->
+        <div class="game-box box-9">
+            <h2>🔤 ترتيب الكلمات</h2>
+            <p>رتب الحروف لتكون كلمة صحيحة:</p>
+            <p id="scrambleWord" style="font-size: 22px; font-weight: bold; color: #c2185b; letter-spacing: 2px;">-</p>
+            <input type="text" id="scrambleInput" placeholder="اكتب الكلمة مرتبة">
+            <br>
+            <button onclick="checkScramble()">تحقق</button>
+            <button onclick="nextScrambleWord()">كلمة جديدة</button>
+            <p id="scrambleResult" style="font-weight: bold;"></p>
+        </div>
+
+        <!-- 👁️ 10. العنصر المختلف (مع صورتك المميزة) -->
+        <div class="game-box box-10">
+            <h2>👁️ قوة الملاحظة</h2>
+            <p>اختر العنصر المختلف:</p>
+            
+            <!-- عرض صورتك التي أرفقتها بدون كلام -->
+            <div style="margin-bottom: 15px;">
+                <img src="data:image/png;base64,..." alt="صورة الهدية" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 10px;" id="oddContainer">
+                <button onclick="checkOdd(0)">🍎</button>
+                <button onclick="checkOdd(1)">🍎</button>
+                <button onclick="checkOdd(2)">🍌</button>
+            </div>
+            <p id="oddResult" style="font-weight: bold;"></p>
+        </div>
+
     </div>
 
     <script>
-        // 1. سكربت تخمين الرقم
-        const targetNumber = Math.floor(Math.random() * 10) + 1;
-        function checkGuess() {
+        // نظام المؤثرات الصوتية (Web Audio API - بدون ملفات خارجية)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            let now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                // صوت تكة خفيفة للأزرار
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'win') {
+                // صوت فوز أو نجاح مبهج
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(587.33, now); // D5
+                osc.frequency.setValueAtTime(880, now + 0.1); // A5
+                gainNode.gain.setValueAtTime(0.15, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'lose') {
+                // صوت خطأ خفيف
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.setValueAtTime(100, now + 0.1);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+        }
+
+        // تشغيل صوت النقر تلقائياً على كل الأزرار
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => playSound('click'));
+        });
+
+
+        // 1. تخمين الرقم (1-100)
+        const targetNumber100 = Math.floor(Math.random() * 100) + 1;
+        function checkGuess100() {
             const userGuess = Number(document.getElementById('guessInput').value);
             const resultElement = document.getElementById('guessResult');
-            if (userGuess === targetNumber) {
-                resultElement.textContent = "🎉 مبروك! تخمينك صحيح.";
+            if (userGuess === targetNumber100) {
+                resultElement.textContent = "🎉 مبروك! الرقم صحيح تماماً.";
                 resultElement.style.color = "green";
+                playSound('win');
             } else {
-                resultElement.textContent = "❌ خطأ، حاول مرة أخرى.";
-                resultElement.style.color = "red";
+                playSound('lose');
+                if (userGuess > targetNumber100) {
+                    resultElement.textContent = "📉 الرقم الأصلي أقل من كده (انزل تحت).";
+                    resultElement.style.color = "#d32f2f";
+                } else {
+                    resultElement.textContent = "📈 الرقم الأصلي أكبر من كده (اططلع فوق).";
+                    resultElement.style.color = "#d32f2f";
+                }
             }
         }
 
-        // 2. سكربت رمي النرد
-        function rollDice() {
-            const diceRoll = Math.floor(Math.random() * 6) + 1;
-            document.getElementById('diceResult').textContent = "النتيجة: " + diceRoll;
-        }
-
-        // 3. سكربت حجر ورقة مقص
-        function playRps(userChoice) {
-            const choices = ['حجر', 'ورقة', 'مقص'];
-            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
-            let message = "اختيارك: " + userChoice + " | اختيار الكمبيوتر: " + computerChoice + ". ";
-            
-            if (userChoice === computerChoice) {
-                message += "تعادل! 🤝";
-            } else if (
-                (userChoice === 'حجر' && computerChoice === 'مقص') ||
-                (userChoice === 'ورقة' && computerChoice === 'حجر') ||
-                (userChoice === 'مقص' && computerChoice === 'ورقة')
-            ) {
-                message += "لقد فزت! 🎉";
-            } else {
-                message += "خسرت، حاول مجدداً! 😢";
-            }
-            document.getElementById('rpsResult').textContent = message;
-        }
-
-        // 4. سكربت لعبة النقرات
+        // 2. النقرات السريعة
         let count = 0;
         function incrementClick() {
             count++;
             document.getElementById('clickCount').textContent = count;
         }
 
-        // 5. سكربت حظ اليوم
-        function getLuck() {
-            const lucks = ["حظك سيحالفك اليوم! 🌟", "اليوم هو يوم إنجازاتك الكبرى! 🚀", "اصبر قليلاً فالفرح قادم 🍀", "كن حذراً في قراراتك اليوم ⚠️", "ستقابل صديقاً قديماً اليوم! 😃"];
-            const randomLuck = lucks[Math.floor(Math.random() * lucks.length)];
-            document.getElementById('luckResult').textContent = randomLuck;
-        }
-
-        // 6. سكربت تحدي التوقيت
-        let timerInterval;
-        let startTime;
-        let isRunning = false;
+        // 3. تحدي الأعصاب
+        let timerInterval, startTime, isRunning = false;
         function startStopTimer() {
             const btn = document.getElementById('timerBtn');
             const display = document.getElementById('timerDisplay');
@@ -246,20 +322,21 @@
                 if (finalTime === 5.0) {
                     result.textContent = "🏆 أسطورة! جبتها 5 ثوانٍ بالضبط!";
                     result.style.color = "#2e7d32";
+                    playSound('win');
                 } else if (finalTime >= 4.8 && finalTime <= 5.2) {
-                    result.textContent = "🔥 ممتاز جداً! (" + finalTime + " ثانية)";
+                    result.textContent = "🔥 ممتاز جداً! (" + finalTime + " ث)";
                     result.style.color = "#f57c00";
+                    playSound('win');
                 } else {
-                    result.textContent = "😅 جابت " + finalTime + " ثانية، حاول تاني!";
+                    result.textContent = "😅 جبت " + finalTime + " ثانية، حاول تاني!";
                     result.style.color = "#c62828";
+                    playSound('lose');
                 }
             }
         }
 
-        // 7. سكربت صيد الأرقام السريعة
-        let catchScore = 0;
-        let timeLeft = 10;
-        let gameTimer;
+        // 4. صيد الأرقام
+        let catchScore = 0, timeLeft = 10, gameTimer;
         function startCatchGame() {
             catchScore = 0;
             timeLeft = 10;
@@ -268,7 +345,6 @@
             document.getElementById('startCatchBtn').style.display = "none";
             document.getElementById('targetBtn').style.display = "inline-block";
             document.getElementById('catchResult').textContent = "";
-
             moveTargetRandomly();
 
             gameTimer = setInterval(() => {
@@ -279,10 +355,10 @@
                     document.getElementById('targetBtn').style.display = "none";
                     document.getElementById('startCatchBtn').style.display = "inline-block";
                     document.getElementById('catchResult').textContent = "انتهى الوقت! صيدت " + catchScore + " نقطة 🎯";
+                    playSound('win');
                 }
             }, 1000);
         }
-
         function hitTarget() {
             if (timeLeft > 0) {
                 catchScore++;
@@ -290,12 +366,185 @@
                 moveTargetRandomly();
             }
         }
-
         function moveTargetRandomly() {
             const btn = document.getElementById('targetBtn');
-            const randomMargin = Math.floor(Math.random() * 40) - 20;
-            btn.style.margin = randomMargin + "px";
+            btn.style.margin = (Math.floor(Math.random() * 40) - 20) + "px";
+        }
+
+        // 5. سرعة رد الفعل
+        let reactStartTime, isWaitingGreen = false, reactTimeout;
+        function startReactionGame() {
+            const box = document.getElementById('reactBox');
+            const res = document.getElementById('reactResult');
+            box.style.backgroundColor = "#e57373";
+            box.textContent = "انتظر حتى يتحول للأخضر...";
+            res.textContent = "استعد...";
+            isWaitingGreen = false;
+            clearTimeout(reactTimeout);
+
+            let randomTime = Math.floor(Math.random() * 2000) + 1500;
+            reactTimeout = setTimeout(() => {
+                box.style.backgroundColor = "#4caf50";
+                box.textContent = "اضغط الآن بسرعة!";
+                reactStartTime = Date.now();
+                isWaitingGreen = true;
+            }, randomTime);
+        }
+        function testReaction() {
+            const res = document.getElementById('reactResult');
+            const box = document.getElementById('reactBox');
+            if (!isWaitingGreen && box.style.backgroundColor === "rgb(229, 115, 115)") {
+                res.textContent = "⚠️ استعجلت وضغطت قبل ما يقلب أخضر!";
+                playSound('lose');
+                clearTimeout(reactTimeout);
+                return;
+            }
+            if (isWaitingGreen) {
+                let reactionTime = Date.now() - reactStartTime;
+                res.textContent = "🚀 سرعتك: " + reactionTime + " ملي ثانية!";
+                playSound('win');
+                isWaitingGreen = false;
+                box.textContent = "اضغط لإعادة اللعبة";
+            } else {
+                startReactionGame();
+            }
+        }
+
+        // 6. الذاكرة الرقمية
+        let currentMemorySeq = "";
+        function startMemoryGame() {
+            currentMemorySeq = Math.floor(100 + Math.random() * 900).toString(); // 3 أرقام
+            const seqText = document.getElementById('memorySeqText');
+            const inputField = document.getElementById('memoryInput');
+            const btn = document.getElementById('memoryBtn');
+            const res = document.getElementById('memoryResult');
+            
+            res.textContent = "";
+            inputField.style.display = "none";
+            seqText.textContent = "احفظ: " + currentMemorySeq;
+            btn.style.display = "none";
+
+            setTimeout(() => {
+                seqText.textContent = "اكتب الأرقام التي ظهرت:";
+                inputField.style.display = "inline-block";
+                inputField.value = "";
+                btn.style.display = "inline-block";
+                btn.textContent = "تحقق";
+                btn.setAttribute("onclick", "checkMemoryGame()");
+            }, 2000);
+        }
+        function checkMemoryGame() {
+            const userVal = document.getElementById('memoryInput').value;
+            const res = document.getElementById('memoryResult');
+            if (userVal === currentMemorySeq) {
+                res.textContent = "🎉 ممتاز! ذاكرتك قوية جداً.";
+                res.style.color = "green";
+                playSound('win');
+            } else {
+                res.textContent = "❌ خطأ، الرقم الصحيح كان: " + currentMemorySeq;
+                res.style.color = "red";
+                playSound('lose');
+            }
+            document.getElementById('memoryBtn').textContent = "ابدأ اللعبة";
+            document.getElementById('memoryBtn').setAttribute("onclick", "startMemoryGame()");
+            document.getElementById('memoryInput').style.display = "none";
+            document.getElementById('memorySeqText').textContent = "اضغط ابدأ واحفظ الأرقام";
+        }
+
+        // 7. الحساب السريع
+        let correctMathAnswer = 0;
+        function startMathGame() {
+            const num1 = Math.floor(Math.random() * 12) + 1;
+            const num2 = Math.floor(Math.random() * 12) + 1;
+            correctMathAnswer = num1 * num2;
+            
+            document.getElementById('mathQuestion').textContent = `كم ناتج: ${num1} × ${num2} ؟`;
+            document.getElementById('mathInput').style.display = "inline-block";
+            document.getElementById('mathInput').value = "";
+            document.getElementById('mathBtn').textContent = "تحقق";
+            document.getElementById('mathBtn').setAttribute("onclick", "checkMathGame()");
+            document.getElementById('mathResult').textContent = "";
+        }
+        function checkMathGame() {
+            const userAns = Number(document.getElementById('mathInput').value);
+            const res = document.getElementById('mathResult');
+            if (userAns === correctMathAnswer) {
+                res.textContent = "✅ إجابة صحيحة وبطل!";
+                res.style.color = "green";
+                playSound('win');
+            } else {
+                res.textContent = "❌ خطأ، الناتج كان: " + correctMathAnswer;
+                res.style.color = "red";
+                playSound('lose');
+            }
+            document.getElementById('mathBtn').textContent = "سؤال جديد";
+            document.getElementById('mathBtn').setAttribute("onclick", "startMathGame()");
+            document.getElementById('mathInput').style.display = "none";
+        }
+
+        // 8. تتبع الصندوق
+        let winningCup = Math.floor(Math.random() * 3) + 1;
+        function resetCupGame() {
+            winningCup = Math.floor(Math.random() * 3) + 1;
+            document.getElementById('cupResult').textContent = "تم إعادة خلط الصناديق، اختر واحداً!";
+            document.getElementById('cupResult').style.color = "#333";
+        }
+        function checkCup(selectedCup) {
+            const res = document.getElementById('cupResult');
+            if (selectedCup === winningCup) {
+                res.textContent = "🎉 مبروك! الجائزة كانت هنا بالفعل.";
+                res.style.color = "green";
+                playSound('win');
+            } else {
+                res.textContent = "❌ للأسف، الجائزة كانت في الصندوق رقم " + winningCup;
+                res.style.color = "red";
+                playSound('lose');
+            }
+        }
+
+        // 9. الكلمات المبعثرة
+        const wordsList = [
+            { scrambled: "ةبرجم", original: "برمجة" },
+            { scrambled: "حاسوب", original: "حاسوب" },
+            { scrambled: "ةسردم", original: "مدرسة" },
+            { scrambled: "بلاع", original: "لاعب" }
+        ];
+        let currentWordObj = wordsList[0];
+        function nextScrambleWord() {
+            currentWordObj = wordsList[Math.floor(Math.random() * wordsList.length)];
+            document.getElementById('scrambleWord').textContent = currentWordObj.scrambled;
+            document.getElementById('scrambleInput').value = "";
+            document.getElementById('scrambleResult').textContent = "";
+        }
+        function checkScramble() {
+            const userText = document.getElementById('scrambleInput').value.trim();
+            const res = document.getElementById('scrambleResult');
+            if (userText === currentWordObj.original) {
+                res.textContent = "🎉 أحسنت! الكلمة صحيحة.";
+                res.style.color = "green";
+                playSound('win');
+            } else {
+                res.textContent = "❌ خطأ، حاول مجدداً.";
+                res.style.color = "red";
+                playSound('lose');
+            }
+        }
+        nextScrambleWord();
+
+        // 10. العنصر المختلف
+        let oddIndex = 2;
+        function checkOdd(idx) {
+            const res = document.getElementById('oddResult');
+            if (idx === oddIndex) {
+                res.textContent = "✅ صحيح! هذا هو العنصر المختلف.";
+                res.style.color = "green";
+                playSound('win');
+            } else {
+                res.textContent = "❌ خطأ، حاول في الاختيار الصحيح.";
+                res.style.color = "red";
+                playSound('lose');
+            }
         }
     </script>
 </body>
-    </html>
+                                               </html>
