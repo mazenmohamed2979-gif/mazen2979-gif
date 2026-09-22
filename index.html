@@ -35,6 +35,10 @@
         button:hover {
             background-color: #0056b3;
         }
+        .rps-btn {
+            font-size: 20px;
+            padding: 8px 15px;
+        }
     </style>
 </head>
 <body>
@@ -64,6 +68,48 @@
         <button onclick="resetDice()" style="background-color: #6c757d;">إعادة ضبط</button>
     </div>
 
+    <br>
+
+    <!-- اللعبة الثالثة: حجرة ورقة مقص -->
+    <div class="game-box">
+        <h2>✂️ حجرة ورقة مقص</h2>
+        <p>اختر سلاحك واهزم الكمبيوتر!</p>
+        
+        <button class="rps-btn" onclick="playRPS('حجرة')">✊ حجرة</button>
+        <button class="rps-btn" onclick="playRPS('ورقة')">📄 ورقة</button>
+        <button class="rps-btn" onclick="playRPS('مقص')">✂️ مقص</button>
+        
+        <p id="rpsResult" style="font-weight: bold; font-size: 16px; margin-top: 15px;"></p>
+    </div>
+
+    <br>
+
+    <!-- اللعبة الرابعة: لعبة تجميع النقاط (العداد) -->
+    <div class="game-box">
+        <h2>🏆 لعبة تجميع النقاط</h2>
+        <p>اضغط بأسرع ما يمكنك لجمع أكبر عدد من النقاط!</p>
+        
+        <h1 id="scoreDisplay" style="color: #ffc107; margin: 10px;">0</h1>
+        
+        <button onclick="incrementScore()" style="background-color: #28a745;">اضغط لتسجيل نقطة! 🎯</button>
+        <button onclick="resetScore()" style="background-color: #dc3545;">تصفير النقاط</button>
+    </div>
+
+    <br>
+
+    <!-- اللعبة الخامسة: لعبة صرة ولا كتابة (عملة معدنية) -->
+    <div class="game-box">
+        <h2>🪙 لعبة صرة ولا كتابة</h2>
+        <p>ارمي العملة وجرب حظك!</p>
+        
+        <h1 id="coinResult" style="color: #17a2b8; margin: 10px;">🪙 ?</h1>
+        
+        <button onclick="flipCoin('صورة')">صورة</button>
+        <button onclick="flipCoin('كتابة')">كتابة</button>
+        
+        <p id="coinMessage" style="font-weight: bold; font-size: 16px; margin-top: 15px;"></p>
+    </div>
+
     <script>
         // كود اللعبة الأولى
         let secretNumber = Math.floor(Math.random() * 10) + 1;
@@ -87,7 +133,7 @@
             }
         }
 
-        // كود اللعبة الثانية (حجر النرد)
+        // كود اللعبة الثانية
         function rollDice() {
             let diceNumber = Math.floor(Math.random() * 6) + 1;
             document.getElementById('diceResult').innerHTML = "🎲 " + diceNumber;
@@ -95,6 +141,57 @@
 
         function resetDice() {
             document.getElementById('diceResult').innerHTML = "🎲 ?";
+        }
+
+        // كود اللعبة الثالثة
+        function playRPS(userChoice) {
+            let choices = ['حجرة', 'ورقة', 'مقص'];
+            let computerChoice = choices[Math.floor(Math.random() * 3)];
+            let resultText = "";
+
+            if (userChoice === computerChoice) {
+                resultText = `🤝 تعادل! الكمبيوتر اختار (${computerChoice})`;
+            } else if (
+                (userChoice === 'حجرة' && computerChoice === 'مقص') ||
+                (userChoice === 'ورقة' && computerChoice === 'حجرة') ||
+                (userChoice === 'مقص' && computerChoice === 'ورقة')
+            ) {
+                resultText = `🎉 فزت! الكمبيوتر اختار (${computerChoice})`;
+            } else {
+                resultText = `😢 خسرت! الكمبيوتر اختار (${computerChoice})`;
+            }
+
+            document.getElementById('rpsResult').innerHTML = resultText;
+        }
+
+        // كود اللعبة الرابعة
+        let score = 0;
+
+        function incrementScore() {
+            score++;
+            document.getElementById('scoreDisplay').innerHTML = score;
+        }
+
+        function resetScore() {
+            score = 0;
+            document.getElementById('scoreDisplay').innerHTML = score;
+        }
+
+        // كود اللعبة الخامسة (صورة ولا كتابة)
+        function flipCoin(userChoice) {
+            let options = ['صورة', 'كتابة'];
+            let coinFlip = options[Math.floor(Math.random() * 2)];
+            let messageBox = document.getElementById('coinMessage');
+
+            document.getElementById('coinResult').innerHTML = "🪙 " + coinFlip;
+
+            if (userChoice === coinFlip) {
+                messageBox.style.color = "green";
+                messageBox.innerHTML = `🎉 مبروك! إجابتك صحيحة (طلعت ${coinFlip})`;
+            } else {
+                messageBox.style.color = "red";
+                messageBox.innerHTML = `❌ حظ أوفر! طلعت (${coinFlip})`;
+            }
         }
     </script>
 
