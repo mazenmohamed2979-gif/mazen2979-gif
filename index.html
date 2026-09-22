@@ -102,7 +102,7 @@
             transform: translateY(-5px);
         }
         
-        /* تلوين الصناديق للألعاب الـ 15 */
+        /* تلوين الصناديق */
         .box-1  { background-color: #e3f2fd; }
         .box-2  { background-color: #e8f5e9; }
         .box-3  { background-color: #fff3e0; }
@@ -112,12 +112,8 @@
         .box-7  { background-color: #fffde7; }
         .box-8  { background-color: #ede7f6; }
         .box-9  { background-color: #e0f2f1; }
-        .box-10 { background-color: #fce4ec; }
-        .box-11 { background-color: #f1f8e9; }
-        .box-12 { background-color: #fff8e1; }
-        .box-13 { background-color: #ede2f6; }
-        .box-14 { background-color: #e1f5fe; }
-        .box-15 { background-color: #ffebee; }
+        .box-10 { background-color: #f1f8e9; }
+        .box-11 { background-color: #fff8e1; }
 
         input {
             padding: 8px;
@@ -155,10 +151,9 @@
 </head>
 <body>
 
-    <!-- 1. شاشة الترحيب الكبرى (صورتك بملء الشاشة أولاً) -->
+    <!-- 1. شاشة الترحيب الكبرى (الصورة بملء الشاشة أولاً) -->
     <div id="welcome-overlay">
-        <!-- ضع اسم صورتك هنا أو رابط الصورة المباشر -->
-        <img src="myphoto.jpg" alt="واجهة ترحيبية" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f'">
+        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f" alt="واجهة ترحيبية ريترو">
         <br>
         <button class="enter-btn" onclick="enterSite()">دخول إلى المنصة 🚀</button>
     </div>
@@ -170,7 +165,7 @@
 
     <div class="games-container">
 
-        <!-- 1. لعبة النقرات السريعة -->
+        <!-- 1. النقرات السريعة -->
         <div class="game-box box-1">
             <h2>1. النقرات السريعة</h2>
             <p>النقرات: <span id="clickCount" style="font-weight: bold; font-size: 18px;">0</span></p>
@@ -234,16 +229,16 @@
             <p id="mathResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 8. تتبع الصندوق (البصري) -->
+        <!-- 8. تتبع الصندوق (إظهار الجائزة سريعاً ثم التوقع) -->
         <div class="game-box box-8">
-            <h2>8. 🔍 تتبع الصندوق</h2>
-            <p>أين توجد الجائزة؟ (اختر صندوقاً)</p>
+            <h2>8. 🔍 تتبع الجائزة السريع</h2>
+            <p id="cupInfoText">اضغط ابدأ لمشاهدة مكان الجائزة سريعاً!</p>
             <div style="display: flex; justify-content: center; gap: 10px; margin: 10px;">
-                <button onclick="checkCup(1)">1 📦</button>
-                <button onclick="checkCup(2)">2 📦</button>
-                <button onclick="checkCup(3)">3 📦</button>
+                <button onclick="checkCup(1)" id="cupBtn1">1 📦</button>
+                <button onclick="checkCup(2)" id="cupBtn2">2 📦</button>
+                <button onclick="checkCup(3)" id="cupBtn3">3 📦</button>
             </div>
-            <button onclick="resetCupGame()">إعادة الخلط</button>
+            <button onclick="startCupGame()" id="startCupBtn">ابدأ الجولة</button>
             <p id="cupResult" style="font-weight: bold;"></p>
         </div>
 
@@ -259,21 +254,9 @@
             <p id="scrambleResult" style="font-weight: bold;"></p>
         </div>
 
-        <!-- 10. العنصر المختلف -->
+        <!-- 10. حجر ورقة مقص -->
         <div class="game-box box-10">
-            <h2>10. 👁️ قوة الملاحظة</h2>
-            <p>اختر العنصر المختلف:</p>
-            <div style="display: flex; justify-content: center; gap: 10px; margin: 15px;" id="oddContainer">
-                <button onclick="checkOdd(0)" style="font-size: 22px;">🍎</button>
-                <button onclick="checkOdd(1)" style="font-size: 22px;">🍎</button>
-                <button onclick="checkOdd(2)" style="font-size: 22px;">🍌</button>
-            </div>
-            <p id="oddResult" style="font-weight: bold;"></p>
-        </div>
-
-        <!-- 11. حجر الزاوية (حجر، ورقة، مقص) -->
-        <div class="game-box box-11">
-            <h2>11. ✂️ حجر ورقة مقص</h2>
+            <h2>10. ✂️ حجر ورقة مقص</h2>
             <p>اختر سلاحك ضد الكمبيوتر:</p>
             <button onclick="playRPS('حجر')">🧱 حجر</button>
             <button onclick="playRPS('ورقة')">📄 ورقة</button>
@@ -281,45 +264,14 @@
             <p id="rpsResult" style="font-weight: bold; font-size: 15px;"></p>
         </div>
 
-        <!-- 12. لعبة الذاكرة الثنائية (مطابقة الرموز) -->
-        <div class="game-box box-12">
-            <h2>12. 🃏 مطابقة الرموز</h2>
-            <p id="matchPrompt" style="font-size: 15px; font-weight: bold;">اعثر على الرمز المتطابق!</p>
-            <div style="display: flex; justify-content: center; gap: 8px; margin: 10px;" id="matchButtons">
-                <button onclick="checkMatch(0)">⭐</button>
-                <button onclick="checkMatch(1)">🌙</button>
-                <button onclick="checkMatch(2)">⭐</button>
-            </div>
-            <button onclick="resetMatchGame()">لعبة جديدة</button>
-            <p id="matchResult" style="font-weight: bold;"></p>
-        </div>
-
-        <!-- 13. إرسال الكرة (توقيت القفز البسيط) -->
-        <div class="game-box box-13">
-            <h2>13. 🏀 تحدي الارتفاع</h2>
-            <p>اضغط في اللحظة المناسبة لتسجيل النقطة!</p>
-            <p id="ballStatus" style="font-size: 20px; font-weight: bold; color: #512da8;">⚪ تحرك الكرة...</p>
-            <button onclick="scoreBasket()" id="basketBtn">تسجيل 🎯</button>
-            <p id="basketResult" style="font-weight: bold;"></p>
-        </div>
-
-        <!-- 14. لغز الألوان (توافق الكلمة مع لونها) -->
-        <div class="game-box box-14">
-            <h2>14. 🎨 تحدي الألوان</h2>
+        <!-- 11. لغز الألوان -->
+        <div class="game-box box-11">
+            <h2>11. 🎨 تحدي الألوان</h2>
             <p>هل لون الكلمة يطابق معناها؟</p>
             <p id="colorWordDisplay" style="font-size: 24px; font-weight: bold;">أحمر</p>
             <button onclick="checkColorGame(true)" style="background-color: #2e7d32;">نعم ✅</button>
             <button onclick="checkColorGame(false)" style="background-color: #c62828;">لا ❌</button>
             <p id="colorGameResult" style="font-weight: bold;"></p>
-        </div>
-
-        <!-- 15. لعبة تجميع الحظ (التدوير أو الحظ السريع) -->
-        <div class="game-box box-15">
-            <h2>15. 🎰 صندوق الحظ</h2>
-            <p>اختبر حظك اليوم واكسب الجائزة الكبرى!</p>
-            <p id="luckDisplay" style="font-size: 22px; font-weight: bold; color: #ad1457;">❓ ❓ ❓</p>
-            <button onclick="openLuckyBox()">افتح الصندوق</button>
-            <p id="luckResult" style="font-weight: bold;"></p>
         </div>
 
     </div>
@@ -382,7 +334,7 @@
             type();
         }
 
-        // دالة الدخول للموقع وإخفاء شاشة الترحيب وتشغيل الصوت وبدء ظهور الاسم
+        // دالة الدخول للموقع وإخفاء شاشة الترحيب
         function enterSite() {
             playSound('win');
             const overlay = document.getElementById('welcome-overlay');
@@ -615,23 +567,44 @@
         }
 
         // 8. تتبع الصندوق
-        let winningCup = Math.floor(Math.random() * 3) + 1;
-        function resetCupGame() {
+        let winningCup = 1;
+        let canGuessCup = false;
+        function startCupGame() {
             winningCup = Math.floor(Math.random() * 3) + 1;
-            document.getElementById('cupResult').textContent = "تم إعادة خلط الصناديق، اختر واحداً!";
-            document.getElementById('cupResult').style.color = "#333";
+            document.getElementById('cupInfoText').textContent = "";
+            document.getElementById('cupResult').textContent = "";
+            canGuessCup = false;
+            
+            document.getElementById('cupBtn1').textContent = (winningCup === 1) ? "🎁 1" : "1 📦";
+            document.getElementById('cupBtn2').textContent = (winningCup === 2) ? "🎁 2" : "2 📦";
+            document.getElementById('cupBtn3').textContent = (winningCup === 3) ? "🎁 3" : "3 📦";
+            document.getElementById('cupInfoText').textContent = "👀 راقب مكان الجائزة...";
+            document.getElementById('startCupBtn').style.display = "none";
+
+            setTimeout(() => {
+                document.getElementById('cupBtn1').textContent = "1 📦";
+                document.getElementById('cupBtn2').textContent = "2 📦";
+                document.getElementById('cupBtn3').textContent = "3 📦";
+                document.getElementById('cupInfoText').textContent = "🧠 أين كانت الجائزة؟ اختر الصندوق!";
+                canGuessCup = true;
+            }, 800);
         }
+
         function checkCup(selectedCup) {
+            if (!canGuessCup) return;
             const res = document.getElementById('cupResult');
             if (selectedCup === winningCup) {
-                res.textContent = "🎉 مبروك! الجائزة كانت هنا بالفعل.";
+                res.textContent = "🎉 بطل! تخمينك دقيق وصحيح.";
                 res.style.color = "#2e7d32";
                 playSound('win');
             } else {
-                res.textContent = "❌ للأسف، الجائزة كانت في الصندوق رقم " + winningCup;
+                res.textContent = "❌ خطأ، الجائزة كانت في الصندوق رقم " + winningCup;
                 res.style.color = "#c62828";
                 playSound('lose');
             }
+            canGuessCup = false;
+            document.getElementById('startCupBtn').style.display = "inline-block";
+            document.getElementById('startCupBtn').textContent = "العب مجدداً";
         }
 
         // 9. الكلمات المبعثرة
@@ -663,22 +636,7 @@
         }
         nextScrambleWord();
 
-        // 10. العنصر المختلف
-        let oddIndex = 2;
-        function checkOdd(idx) {
-            const res = document.getElementById('oddResult');
-            if (idx === oddIndex) {
-                res.textContent = "✅ صحيح! هذا هو العنصر المختلف.";
-                res.style.color = "#2e7d32";
-                playSound('win');
-            } else {
-                res.textContent = "❌ خطأ، حاول في الاختيار الصحيح.";
-                res.style.color = "#c62828";
-                playSound('lose');
-            }
-        }
-
-        // 11. حجر ورقة مقص
+        // 10. حجر ورقة مقص
         function playRPS(userChoice) {
             const options = ['حجر', 'ورقة', 'مقص'];
             const compChoice = options[Math.floor(Math.random() * options.length)];
@@ -703,46 +661,7 @@
             }
         }
 
-        // 12. مطابقة الرموز
-        let winningMatchIdx = 0;
-        function resetMatchGame() {
-            winningMatchIdx = Math.floor(Math.random() * 3);
-            document.getElementById('matchResult').textContent = "";
-        }
-        function checkMatch(idx) {
-            const res = document.getElementById('matchResult');
-            if (idx === 0 || idx === 2) {
-                res.textContent = "⭐ تطابق صحيح!";
-                res.style.color = "#2e7d32";
-                playSound('win');
-            } else {
-                res.textContent = "❌ ليس متطابقاً!";
-                res.style.color = "#c62828";
-                playSound('lose');
-            }
-        }
-        resetMatchGame();
-
-        // 13. تحدي الارتفاع (السلة)
-        let basketActive = true;
-        function scoreBasket() {
-            const res = document.getElementById('basketResult');
-            const status = document.getElementById('ballStatus');
-            let success = Math.random() > 0.4;
-            if (success) {
-                status.textContent = "🏀 سددتها بنجاح في السلة!";
-                res.textContent = "🎉 رائع جداً!";
-                res.style.color = "#2e7d32";
-                playSound('win');
-            } else {
-                status.textContent = "🏀 أخطأت السلة بقليل!";
-                res.textContent = "😅 حظ أفرط في المرة القادمة!";
-                res.style.color = "#c62828";
-                playSound('lose');
-            }
-        }
-
-        // 14. تحدي الألوان
+        // 11. تحدي الألوان
         let isColorMatch = true;
         function nextColorGame() {
             const words = ["أحمر", "أزرق", "أخضر", "أصفر"];
@@ -769,16 +688,6 @@
             nextColorGame();
         }
         nextColorGame();
-
-        // 15. صندوق الحظ
-        function openLuckyBox() {
-            const prizes = ["🎁 جائزة كبرى (100 نقطة)", "💎 جوهرة نادر", "⭐ نجمة ذهبية", "🍀 حظ سعيد المرة القادمة"];
-            const randPrize = prizes[Math.floor(Math.random() * prizes.length)];
-            document.getElementById('luckDisplay').textContent = randPrize;
-            document.getElementById('luckResult').textContent = "مبروك فتح الصندوق!";
-            document.getElementById('luckResult').style.color = "#2e7d32";
-            playSound('win');
-        }
     </script>
 </body>
-                </html>
+    </html>
