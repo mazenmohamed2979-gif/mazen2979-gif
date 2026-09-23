@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعم البرجر السريع</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+        body {
+            background-color: #f7d070;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #d32f2f;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 10px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff8e7;
+            border: 4px solid #8d6e63;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        /* Customer Section */
+        .customer-area {
+            width: 100%;
+            text-align: center;
+            background: #ffe0b2;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .customer-avatar {
+            font-size: 50px;
+        }
+        .order-bubble {
+            background: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 8px 15px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+            color: #e65100;
+        }
+        .patience-bar-container {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .patience-bar {
+            height: 100%;
+            width: 100%;
+            background: #4caf50;
+            transition: width 0.1s linear, background-color 0.3s;
+        }
+        /* Assembly Table */
+        .plate-area {
+            width: 100%;
+            min-height: 180px;
+            background: #d7ccc8;
+            border-bottom: 8px solid #a1887f;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .ingredient-item {
+            height: 25px;
+            width: 140px;
+            border-radius: 12px;
+            margin: 2px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: dropIn 0.2s ease-out;
+        }
+        @keyframes dropIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .bun-bottom { background: #d78328; }
+        .meat { background: #5d4037; }
+        .cheese { background: #fbc02d; color: #333; }
+        .lettuce { background: #4caf50; }
+        .bun-top { background: #e65100; }
+
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            box-shadow: 0 4px #999;
+        }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px #666;
+        }
+        .btn-bun-bottom { background: #ffe0b2; color: #e65100; }
+        .btn-meat { background: #d7ccc8; color: #5d4037; }
+        .btn-cheese { background: #fff9c4; color: #fbc02d; }
+        .btn-lettuce { background: #c8e6c9; color: #2e7d32; }
+        .btn-bun-top { background: #ffcc80; color: #e65100; }
+        
+        .action-btns {
+            grid-column: span 3;
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .btn-serve { background: #4caf50; color: white; flex: 2; }
+        .btn-clear { background: #f44336; color: white; flex: 1; }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 100;
+        }
+        .overlay button {
+            background: #ff9800;
+            color: white;
+            font-size: 20px;
+            padding: 15px 30px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🍔 مطعم البرجر 🍔</h1>
+    
+    <div class="stats">
+        <div>النقاط: <span id="score">0</span></div>
+        <div>الأرباح: $<span id="money">0</span></div>
+    </div>
+
+    <div class="game-container">
+        <!-- منطقة الزبون -->
+        <div class="customer-area">
+            <div class="customer-avatar" id="customer-emoji">👨</div>
+            <div>الطلب: <div class="order-bubble" id="order-text">جاري التحميل...</div></div>
+            <div class="patience-bar-container">
+                <div class="patience-bar" id="patience-bar"></div>
+            </div>
+        </div>
+
+        <!-- منطقة التجميع -->
+        <div class="plate-area" id="plate"></div>
+
+        <!-- أزرار التحكم -->
+        <div class="controls">
+            <button class="btn-bun-bottom" onclick="addIngredient('bun-bottom', 'خبز سفلي')">🍞 خبز سفلي</button>
+            <button class="btn-meat" onclick="addIngredient('meat', 'لحم')">🥩 لحم</button>
+            <button class="btn-cheese" onclick="addIngredient('cheese', 'جبن')">🧀 جبن</button>
+            <button class="btn-lettuce" onclick="addIngredient('lettuce', 'خس')">🥬 خس</button>
+            <button class="btn-bun-top" onclick="addIngredient('bun-top', 'خبز علوي')">🍔 خبز علوي</button>
+            
+            <div class="action-btns">
+                <button class="btn-serve" onclick="serveOrder()">✅ تقديم الطلب</button>
+                <button class="btn-clear" onclick="clearPlate()">🗑️ مسح</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة البداية / انتهاء اللعبة -->
+    <div class="overlay" id="overlay">
+        <h2 id="overlay-title">مرحباً بك في مطعمك!</h2>
+        <p id="overlay-msg">قم بتحضير الطلبات قبل انتهاء صبر الزبائن.</p>
+        <button onclick="startGame()">ابدأ اللعب 🚀</button>
+    </div>
+
+    <script>
+        const customers = ['👨', '👩', '👴', '👵', '👧', '👦', '🧔'];
+        
+        // المكونات المتاحة
+        const ingredientsDict = {
+            'bun-bottom': 'خبز سفلي',
+            'meat': 'لحم',
+            'cheese': 'جبن',
+            'lettuce': 'خس',
+            'bun-top': 'خبز علوي'
+        };
+
+        // وصفات البرجر
+        const recipes = [
+            { name: "برجر كلاسيك", items: ['bun-bottom', 'meat', 'bun-top'] },
+            { name: "تشيز برجر", items: ['bun-bottom', 'meat', 'cheese', 'bun-top'] },
+            { name: "برجر ديلوكس", items: ['bun-bottom', 'meat', 'cheese', 'lettuce', 'bun-top'] },
+            { name: "برجر مضاعف", items: ['bun-bottom', 'meat', 'meat', 'cheese', 'bun-top'] }
+        ];
+
+        let currentOrder = null;
+        let currentPlate = [];
+        let score = 0;
+        let money = 0;
+        let patienceTimer = null;
+        let patience = 100;
+
+        function startGame() {
+            document.getElementById('overlay').style.display = 'none';
+            score = 0;
+            money = 0;
+            updateStats();
+            nextCustomer();
+        }
+
+        function nextCustomer() {
+            clearPlate();
+            
+            // اختيار زبون وطلب عشوائي
+            const randomCustomer = customers[Math.floor(Math.random() * customers.length)];
+            currentOrder = recipes[Math.floor(Math.random() * recipes.length)];
+
+            document.getElementById('customer-emoji').innerText = randomCustomer;
+            document.getElementById('order-text').innerText = currentOrder.name;
+
+            // إعادة ضبط شريط الصبر
+            patience = 100;
+            clearInterval(patienceTimer);
+            
+            patienceTimer = setInterval(() => {
+                patience -= 1;
+                const bar = document.getElementById('patience-bar');
+                bar.style.width = patience + '%';
+
+                if (patience > 50) bar.style.backgroundColor = '#4caf50';
+                else if (patience > 20) bar.style.backgroundColor = '#ff9800';
+                else bar.style.backgroundColor = '#f44336';
+
+                if (patience <= 0) {
+                    clearInterval(patienceTimer);
+                    alert("غضب الزبون وغادر المطعم! 😡");
+                    nextCustomer();
+                }
+            }, 150); // سرعة نفاذ الصبر
+        }
+
+        function addIngredient(type, name) {
+            if (currentPlate.length >= 6) return; // حد أقصى للطبقات
+
+            currentPlate.push(type);
+            
+            const plate = document.getElementById('plate');
+            const item = document.createElement('div');
+            item.className = `ingredient-item ${type}`;
+            item.innerText = name;
+            plate.appendChild(item);
+        }
+
+        function clearPlate() {
+            currentPlate = [];
+            document.getElementById('plate').innerHTML = '';
+        }
+
+        function serveOrder() {
+            if (!currentOrder) return;
+
+            // التحقق من صحة الطبق (المكونات والترتيب)
+            const isCorrect = JSON.stringify(currentPlate) === JSON.stringify(currentOrder.items);
+
+            if (isCorrect) {
+                clearInterval(patienceTimer);
+                score += 10;
+                money += 15;
+                updateStats();
+                alert("طلب صحيح! ممتاز 🎉");
+                nextCustomer();
+            } else {
+                alert("الطلب غير صحيح! تحقق من الترتيب والمكونات ❌");
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('score').innerText = score;
+            document.getElementById('money').innerText = money;
+        }
+    </script>
+</body>
+</html>
